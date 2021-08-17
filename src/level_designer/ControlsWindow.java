@@ -45,7 +45,9 @@ public class ControlsWindow {
 		objectTypeSelection.addItem("Left Wall");
 		objectTypeSelection.addItem("Right Wall");
 		objectTypeSelection.addItem("Coin");
-		objectTypeSelection.addItem("JumpThroughTile");
+		objectTypeSelection.addItem("Jump Through Left");
+		objectTypeSelection.addItem("Jump Through Middle");
+		objectTypeSelection.addItem("Jump Through Right");
 		objectTypeSelection.setSelectedIndex(0);
 		objectTypeSelection.setBounds((width - 125) / 2, 120, 125, 20);
 		objectTypeSelection.setVisible(true);
@@ -94,8 +96,14 @@ public class ControlsWindow {
 				case Cell.COIN:
 					icon = new ImageIcon(tex.coin[3].getScaledInstance(64, 64, 0));
 					break;
-				case Cell.JUMP_THROUGH:
+				case Cell.JUMP_THROUGH_LEFT:
+					icon = new ImageIcon(tex.groundTiles[8].getScaledInstance(64, 64, 0));
+					break;
+				case Cell.JUMP_THROUGH_MIDDLE:
 					icon = new ImageIcon(tex.groundTiles[9].getScaledInstance(64, 64, 0));
+					break;
+				case Cell.JUMP_THROUGH_RIGHT:
+					icon = new ImageIcon(tex.groundTiles[10].getScaledInstance(64, 64, 0));
 					break;
 				default:
 					icon = null;

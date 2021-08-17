@@ -1,26 +1,34 @@
 package objects;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
 import framework.GameObject;
 import framework.ObjectId;
 import framework.Texture;
+import objects.GroundTile.TYPE;
 import window.Camera;
 import window.GameMain;
 import window.Handler;
 
 public class JumpThroughTile extends GameObject {
-
+	
+	public static enum TYPE {
+		Left,
+		Middle,
+		Right
+	}
+	private TYPE type;
+	
 	private Handler handler;
 	private Camera cam;
 	private Texture tex = GameMain.getTexture();
 	
-	public JumpThroughTile(int x, int y, Camera cam, Handler handler, ObjectId id) {
+	public JumpThroughTile(int x, int y, TYPE type, Camera cam, Handler handler, ObjectId id) {
 		super(x, y, id);
 		this.cam = cam;
 		this.handler = handler;
+		this.type = type;
 		
 		width = GameMain.WIDTH / GameMain.TILE_COUNT_X;
 		height = width / 3;
@@ -29,17 +37,31 @@ public class JumpThroughTile extends GameObject {
 	@Override
 	public void tick() {
 		if (x < (int) -cam.getX() - width)
-			handler.removeObject(this);	
+			handler.removeObject(this);
 	}
 
 	@Override
 	public void render(Graphics g) {
-		g.drawImage(tex.groundTiles[4], x, y + 4, null);
+		switch (type) {
+		case Left:
+			g.drawImage(tex.groundTiles[8], x, y, null);
+			break;
+		case Middle:
+			g.drawImage(tex.groundTiles[9], x, y, null);
+			break;
+		case Right:
+			g.drawImage(tex.groundTiles[10], x, y, null);
+			break;
+		}
 	}
 
 	@Override
 	public Rectangle getBounds() {
 		return new Rectangle(x, y + (width - height), width, height);
+	}
+	
+	public TYPE getType() {
+		return type;
 	}
 	
 }

@@ -17,7 +17,9 @@ public class Cell {
 	public static final int LEFT_WALL = 7;
 	public static final int RIGHT_WALL = 8;
 	public static final int COIN = 9;
-	public static final int JUMP_THROUGH = 10;
+	public static final int JUMP_THROUGH_LEFT = 10;
+	public static final int JUMP_THROUGH_MIDDLE = 11;
+	public static final int JUMP_THROUGH_RIGHT = 12;
 
 	public BufferedImage image;
 	public Rectangle rect;
@@ -93,10 +95,20 @@ public class Cell {
 			cellSpanY = 1;
 			image = tex.coin[3];
 			break;
-		case 10: //Jump Through Tile
+		case 10: //Jump Through Left
 			cellSpanX = 1;
 			cellSpanY = 1;
-			image = tex.groundTiles[4];
+			image = tex.groundTiles[8];
+			break;
+		case 11: //Jump Through Middle
+			cellSpanX = 1;
+			cellSpanY = 1;
+			image = tex.groundTiles[9];
+			break;
+		case 12: //Jump Through Right
+			cellSpanX = 1;
+			cellSpanY = 1;
+			image = tex.groundTiles[10];
 			break;
 		default:
 			cellSpanX = 1;

@@ -10,7 +10,7 @@ public class Texture {
 	private BufferedImage block_sheet = null;
 	private BufferedImage player_sheet = null;
 	
-	public BufferedImage[] groundTiles = new BufferedImage[9];
+	public BufferedImage[] groundTiles = new BufferedImage[11];
 	public BufferedImage[] coin = new BufferedImage[6];
 	
 	public BufferedImage[] player = new BufferedImage[8];
@@ -35,7 +35,9 @@ public class Texture {
 			groundTiles[i] = block_sheet.getSubimage(1 + i * (tileWidth + 1), 1, tileWidth, tileWidth);
 		groundTiles[6] = block_sheet.getSubimage(1, 34, tileWidth * 8, tileWidth);
 		groundTiles[7] = block_sheet.getSubimage(1, 67, tileWidth * 8, tileWidth);
-		groundTiles[8] = block_sheet.getSubimage(199, 1, tileWidth, tileWidth);
+		
+		for (int i = 0; i < 3; i++)
+			groundTiles[8 + i] = block_sheet.getSubimage(199 + i * (tileWidth + 1), 1, tileWidth, tileWidth);
 				
 		for (int i = 0; i < coin.length; i++)
 			coin[i] = block_sheet.getSubimage(1 + i * 33, 100, 32, 32);

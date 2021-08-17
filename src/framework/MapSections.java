@@ -34,7 +34,7 @@ public class MapSections {
 				handler.addObject(new Coin(object.getX() - (int) cam.getX(), object.getY(), object.getWidth(), object.getHeight(), cam, handler, ObjectId.Coin), Handler.MIDDLE_LAYER);
 				break;
 			case JumpThroughTile:
-				handler.addObject(new JumpThroughTile(object.getX() - (int) cam.getX(), object.getY(), cam, handler, object.getId()), Handler.MIDDLE_LAYER);
+				handler.addObject(new JumpThroughTile(object.getX() - (int) cam.getX(), object.getY(), ((JumpThroughTile) object).getType() ,cam, handler, object.getId()), Handler.MIDDLE_LAYER);
 				break;
 			}
 		}
@@ -82,8 +82,14 @@ public class MapSections {
 					height = width;
 					list.add(new Coin(cellX + width / 4, cellY + height / 4, width, height, cam, handler, ObjectId.Coin));
 					break;
-				case 10: //Jump Through
-					list.add(new JumpThroughTile(cellX, cellY, cam, handler, ObjectId.JumpThroughTile));
+				case 10: //Jump Through Left
+					list.add(new JumpThroughTile(cellX, cellY, JumpThroughTile.TYPE.Left, cam, handler, ObjectId.JumpThroughTile));
+					break;
+				case 11: //Jump Through Middle
+					list.add(new JumpThroughTile(cellX, cellY, JumpThroughTile.TYPE.Middle, cam, handler, ObjectId.JumpThroughTile));
+					break;
+				case 12: //Jump Through Right
+					list.add(new JumpThroughTile(cellX, cellY, JumpThroughTile.TYPE.Right, cam, handler, ObjectId.JumpThroughTile));
 					break;
 				}
 			}
