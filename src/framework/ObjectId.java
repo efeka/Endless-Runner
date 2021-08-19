@@ -6,5 +6,6 @@ public enum ObjectId {
 	BasicBullet(),
 	Coin(),
 	JumpThroughTile(),
-	Gem();
+	Gem(),
+	DustEffect();
 }

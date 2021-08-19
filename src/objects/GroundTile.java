@@ -42,11 +42,11 @@ public class GroundTile extends GameObject {
 		case Wall:
 		case LeftWall:
 		case RightWall:
-			width = height = GameMain.WIDTH / GameMain.TILE_COUNT_X;
+			width = height = (int) Math.ceil((double) (GameMain.WIDTH) / GameMain.TILE_COUNT_X);
 			break;
 		case GrassX8:
 		case WallX8:
-			height = GameMain.WIDTH / GameMain.TILE_COUNT_X;
+			height = (int) Math.ceil((double) (GameMain.WIDTH) / GameMain.TILE_COUNT_X);
 			width = 8 * height;
 			break;
 		}

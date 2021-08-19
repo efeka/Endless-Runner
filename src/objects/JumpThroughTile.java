@@ -29,7 +29,7 @@ public class JumpThroughTile extends GameObject {
 		this.handler = handler;
 		this.type = type;
 		
-		width = GameMain.WIDTH / GameMain.TILE_COUNT_X;
+		width = (int) Math.ceil((double) (GameMain.WIDTH) / GameMain.TILE_COUNT_X);
 		height = width / 2;
 	}
 

@@ -67,7 +67,7 @@ public class GameMain extends Canvas implements Runnable {
 		
 		int tileWidth = WIDTH / TILE_COUNT_X;
 		int tileHeight = HEIGHT / TILE_COUNT_Y;
-		Player player = new Player(TILE_COUNT_X * 5, tileHeight * 7, 5 * tileWidth / 4, tileHeight * 2, playerData, cam, handler, ObjectId.Player);
+		Player player = new Player(TILE_COUNT_X * 5, tileHeight * 7, (int) Math.ceil(5 * tileWidth / 4.0), tileHeight * 2, playerData, cam, handler, ObjectId.Player);
 		handler.setPlayer(player);
 		handler.addObject(player, Handler.MIDDLE_LAYER);
 		

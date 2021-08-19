@@ -40,7 +40,7 @@ public class Player extends GameObject {
 		this.cam = cam;
 		this.handler = handler;
 		this.playerData = playerData;
-		
+
 		initialX = x;
 		initialY = y;
 		velX = GameMain.WIDTH / 256;
@@ -50,7 +50,7 @@ public class Player extends GameObject {
 		runningAnim = new Animation(4, tex.player[0], tex.player[1], tex.player[2], tex.player[3], tex.player[4], tex.player[5], tex.player[6], tex.player[7]);
 		gun1RunningAnim = new Animation(4, tex.gun1[0], tex.gun1[1], tex.gun1[2], tex.gun1[3], tex.gun1[4], tex.gun1[5], tex.gun1[6], tex.gun1[7]);
 	}
-	
+
 	@Override
 	public void tick() {
 		//shooting
@@ -73,6 +73,7 @@ public class Player extends GameObject {
 		if (jumpTimer < jumpCooldown)
 			jumpTimer++;
 		else if (KeyInput.pressedSpace && !jumping) {
+			handler.addObject(new DustEffect(x + width / 2, y + height / 2, cam, handler, ObjectId.DustEffect), Handler.TOP_LAYER);
 			jumpTimer = 0;
 			jumping = true;
 			velY = jumpVelY;
@@ -151,13 +152,16 @@ public class Player extends GameObject {
 
 	@Override
 	public void render(Graphics g) {
-		runningAnim.drawAnimation(g, x, y, width, height);
-		gun1RunningAnim.drawAnimation(g, x - width / 2, y, width * 2, height);
-		//g.drawImage(tex.player[0], x, y, width, height, null);
-		//		g.setColor(Color.orange);
-		//		g.fillRect(x, y, width, height);
+		if (jumping) {
+			g.drawImage(tex.player[8], x, y, width, height, null);
+			g.drawImage(tex.gun1[2], x - width / 2, y, width * 2, height, null);
+		}
+		else {
+			runningAnim.drawAnimation(g, x, y, width, height);
+			gun1RunningAnim.drawAnimation(g, x - width / 2, y, width * 2, height);
+		}
 
-		//for debugging
+		//debug
 		/*
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.setColor(Color.red);

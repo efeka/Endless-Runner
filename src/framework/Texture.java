@@ -15,9 +15,11 @@ public class Texture {
 	public BufferedImage[] coin = new BufferedImage[6];
 	public BufferedImage[] gem = new BufferedImage[6];
 	
-	public BufferedImage[] player = new BufferedImage[8];
+	public BufferedImage[] player = new BufferedImage[10];
 	public BufferedImage[] gun1 = new BufferedImage[8];
 	public BufferedImage[] basicBullet = new BufferedImage[4];
+	
+	public BufferedImage[] dustEffect = new BufferedImage[5];
  	
 	public Texture() {
 		BufferedImageLoader loader = new BufferedImageLoader();
@@ -61,5 +63,8 @@ public class Texture {
 			gun1[i] = weapon_sheet.getSubimage(1 + i * 81, 1, 80, 64);
 		for (int i = 4; i < 8; i++)
 			gun1[i] = weapon_sheet.getSubimage(1 + (i - 4) * 81, 66, 80, 64);
+		
+		for (int i = 0; i < dustEffect.length; i++)
+			dustEffect[i] = block_sheet.getSubimage(1 + i * 33, 166, 32, 32);
 	}
 }
