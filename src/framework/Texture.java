@@ -9,12 +9,14 @@ public class Texture {
 
 	private BufferedImage block_sheet = null;
 	private BufferedImage player_sheet = null;
+	private BufferedImage weapon_sheet = null;
 	
 	public BufferedImage[] groundTiles = new BufferedImage[11];
 	public BufferedImage[] coin = new BufferedImage[6];
+	public BufferedImage[] gem = new BufferedImage[6];
 	
 	public BufferedImage[] player = new BufferedImage[8];
-	public BufferedImage[] gun1 = new BufferedImage[3];
+	public BufferedImage[] gun1 = new BufferedImage[8];
 	public BufferedImage[] basicBullet = new BufferedImage[4];
  	
 	public Texture() {
@@ -22,6 +24,7 @@ public class Texture {
 		try {
 			block_sheet = loader.loadImage("/block_sheet.png");
 			player_sheet = loader.loadImage("/player_sheet.png");
+			weapon_sheet = loader.loadImage("/weapon_sheet.png");
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -30,7 +33,7 @@ public class Texture {
 	}
 	
 	private void getTextures() {
-		int tileWidth = GameMain.WIDTH / GameMain.TILE_COUNT_X;
+		int tileWidth = 32;
 		for (int i = 0; i < 6; i++) 
 			groundTiles[i] = block_sheet.getSubimage(1 + i * (tileWidth + 1), 1, tileWidth, tileWidth);
 		groundTiles[6] = block_sheet.getSubimage(1, 34, tileWidth * 8, tileWidth);
@@ -50,5 +53,13 @@ public class Texture {
 		
 		for (int i = 0; i < basicBullet.length; i++)
 			basicBullet[i] = player_sheet.getSubimage(121 + 25 * i, 56, 24, 24);
+		
+		for (int i = 0; i < gem.length; i++) 
+			gem[i] = block_sheet.getSubimage(1 + i * 33, 133, 32, 32);
+		
+		for (int i = 0; i < 4; i++)
+			gun1[i] = weapon_sheet.getSubimage(1 + i * 81, 1, 80, 64);
+		for (int i = 4; i < 8; i++)
+			gun1[i] = weapon_sheet.getSubimage(1 + (i - 4) * 81, 66, 80, 64);
 	}
 }

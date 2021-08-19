@@ -11,15 +11,19 @@ import framework.KeyInput;
 import framework.MapSections;
 import framework.MouseInput;
 import framework.ObjectId;
+import framework.PlayerData;
 import framework.Texture;
 import objects.GroundTile;
 import objects.Player;
 
 /*
- * TODO: Add thinner blocks that the player can jump through
+ * TODO: Calculate player gravity based on screen dimensions
+ * TODO: Add player health
  * TODO: Add jumping pads that bounces you higher than your jump
+ * TODO: Add spikes
  * TODO: Add enemies
  * TODO: Add ammo mechanic
+ * TODO: Player damage / jump animation
  * TODO: Add power ups (both in game and pre game)
  * TODO: Parallax background 
  * TODO: Add different weapons bought with coins
@@ -59,9 +63,11 @@ public class GameMain extends Canvas implements Runnable {
 		mouse = new MouseInput();
 		keyboard = new KeyInput();
 		
+		PlayerData playerData = new PlayerData();
+		
 		int tileWidth = WIDTH / TILE_COUNT_X;
 		int tileHeight = HEIGHT / TILE_COUNT_Y;
-		Player player = new Player(TILE_COUNT_X * 5, 100, 5 * tileWidth / 4, tileHeight * 2, cam, handler, ObjectId.Player);
+		Player player = new Player(TILE_COUNT_X * 5, tileHeight * 7, 5 * tileWidth / 4, tileHeight * 2, playerData, cam, handler, ObjectId.Player);
 		handler.setPlayer(player);
 		handler.addObject(player, Handler.MIDDLE_LAYER);
 		
@@ -69,9 +75,12 @@ public class GameMain extends Canvas implements Runnable {
 		nextSectionTimer = nextSectionCooldown;
 		
 		//initial ground
-		for (int i = 0; i < TILE_COUNT_X / 8; i++)
+		for (int i = 0; i < TILE_COUNT_X / 8; i++) {
 			handler.addObject(new GroundTile(i * 8 * WIDTH / TILE_COUNT_X + (int) player.getVelX(), HEIGHT - 3 * HEIGHT / TILE_COUNT_Y, GroundTile.TYPE.GrassX8, cam, handler, ObjectId.GroundTile), Handler.MIDDLE_LAYER);
-		
+			handler.addObject(new GroundTile(i * 8 * WIDTH / TILE_COUNT_X + (int) player.getVelX(), HEIGHT - 2 * HEIGHT / TILE_COUNT_Y, GroundTile.TYPE.WallX8, cam, handler, ObjectId.GroundTile), Handler.MIDDLE_LAYER);
+			handler.addObject(new GroundTile(i * 8 * WIDTH / TILE_COUNT_X + (int) player.getVelX(), HEIGHT - HEIGHT / TILE_COUNT_Y, GroundTile.TYPE.WallX8, cam, handler, ObjectId.GroundTile), Handler.MIDDLE_LAYER);
+		}
+
 		addMouseListener(mouse);
 		addMouseMotionListener(mouse);
 		addKeyListener(keyboard);

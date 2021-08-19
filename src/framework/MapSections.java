@@ -3,6 +3,7 @@ package framework;
 import java.util.ArrayList;
 
 import objects.Coin;
+import objects.Gem;
 import objects.GroundTile;
 import objects.JumpThroughTile;
 import window.Camera;
@@ -35,6 +36,9 @@ public class MapSections {
 				break;
 			case JumpThroughTile:
 				handler.addObject(new JumpThroughTile(object.getX() - (int) cam.getX(), object.getY(), ((JumpThroughTile) object).getType() ,cam, handler, object.getId()), Handler.MIDDLE_LAYER);
+				break;
+			case Gem:
+				handler.addObject(new Gem(object.getX() - (int) cam.getX(), object.getY(), object.getWidth(), object.getHeight(), cam, handler, ObjectId.Gem), Handler.MIDDLE_LAYER);
 				break;
 			}
 		}
@@ -90,6 +94,9 @@ public class MapSections {
 					break;
 				case 12: //Jump Through Right
 					list.add(new JumpThroughTile(cellX, cellY, JumpThroughTile.TYPE.Right, cam, handler, ObjectId.JumpThroughTile));
+					break;
+				case 13: //Gem
+					list.add(new Coin(cellX, cellY, GameMain.WIDTH / GameMain.TILE_COUNT_X, GameMain.WIDTH / GameMain.TILE_COUNT_X, cam, handler, ObjectId.Gem));
 					break;
 				}
 			}

@@ -48,8 +48,9 @@ public class ControlsWindow {
 		objectTypeSelection.addItem("Jump Through Left");
 		objectTypeSelection.addItem("Jump Through Middle");
 		objectTypeSelection.addItem("Jump Through Right");
+		objectTypeSelection.addItem("Gem");
 		objectTypeSelection.setSelectedIndex(0);
-		objectTypeSelection.setBounds((width - 125) / 2, 120, 125, 20);
+		objectTypeSelection.setBounds((width - 150) / 2, 120, 150, 20);
 		objectTypeSelection.setVisible(true);
 		frame.add(objectTypeSelection);
 
@@ -104,6 +105,9 @@ public class ControlsWindow {
 					break;
 				case Cell.JUMP_THROUGH_RIGHT:
 					icon = new ImageIcon(tex.groundTiles[10].getScaledInstance(64, 64, 0));
+					break;
+				case Cell.GEM:
+					icon = new ImageIcon(tex.gem[0].getScaledInstance(64, 64, 0));
 					break;
 				default:
 					icon = null;

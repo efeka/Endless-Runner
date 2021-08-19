@@ -5,5 +5,6 @@ public enum ObjectId {
 	GroundTile(),
 	BasicBullet(),
 	Coin(),
-	JumpThroughTile();
+	JumpThroughTile(),
+	Gem();
 }

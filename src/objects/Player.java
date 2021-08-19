@@ -7,6 +7,7 @@ import framework.GameObject;
 import framework.KeyInput;
 import framework.MouseInput;
 import framework.ObjectId;
+import framework.PlayerData;
 import framework.Texture;
 import window.Animation;
 import window.Camera;
@@ -18,6 +19,7 @@ public class Player extends GameObject {
 	private Handler handler;
 	private Texture tex = GameMain.getTexture();
 	private Camera cam;
+	private PlayerData playerData;
 
 	private float gravity = 0.5f;
 	private final int LIMIT_SPEED = 15;
@@ -28,21 +30,25 @@ public class Player extends GameObject {
 
 	private int initialX, initialY;
 	private float catchUpVelX;
+	private int jumpVelY;
 
 	private Animation runningAnim;
 	private Animation gun1RunningAnim;
 
-	public Player(int x, int y, int width, int height, Camera cam, Handler handler, ObjectId id) {
+	public Player(int x, int y, int width, int height, PlayerData playerData, Camera cam, Handler handler, ObjectId id) {
 		super(x, y, width, height, id);
-		System.out.println(width + " " + height);
 		this.cam = cam;
 		this.handler = handler;
+		this.playerData = playerData;
+		
 		initialX = x;
 		initialY = y;
-		velX = 4;
+		velX = GameMain.WIDTH / 256;
 		catchUpVelX = velX + 1;
+		jumpVelY = -1 * (int) Math.ceil((GameMain.HEIGHT / GameMain.TILE_COUNT_Y) / 3.2);
+
 		runningAnim = new Animation(4, tex.player[0], tex.player[1], tex.player[2], tex.player[3], tex.player[4], tex.player[5], tex.player[6], tex.player[7]);
-		gun1RunningAnim = new Animation(4, tex.gun1[0], tex.gun1[1], tex.gun1[2], tex.gun1[0], tex.gun1[0], tex.gun1[1], tex.gun1[2], tex.gun1[0]);
+		gun1RunningAnim = new Animation(4, tex.gun1[0], tex.gun1[1], tex.gun1[2], tex.gun1[3], tex.gun1[4], tex.gun1[5], tex.gun1[6], tex.gun1[7]);
 	}
 	
 	@Override
@@ -69,7 +75,7 @@ public class Player extends GameObject {
 		else if (KeyInput.pressedSpace && !jumping) {
 			jumpTimer = 0;
 			jumping = true;
-			velY = -12;
+			velY = jumpVelY;
 		}
 
 		//if the user gets stuck on an obstacle, the player tries to go back to its original position
@@ -130,9 +136,14 @@ public class Player extends GameObject {
 					x = tempObject.getX() - width;
 				}
 			}
-			else if (tempObject.getId() == ObjectId.Coin) {
-				if (getBounds().intersects(tempObject.getBounds())) 
+			else if (tempObject.getId() == ObjectId.Coin || tempObject.getId() == ObjectId.Gem) {
+				if (getBounds().intersects(tempObject.getBounds())) {
 					handler.removeObject(tempObject);
+					if (tempObject.getId() == ObjectId.Coin)
+						playerData.setCoins(playerData.getCoins() + 1);
+					else
+						playerData.setGems(playerData.getGems() + 1);
+				}
 			}
 		}
 		falling = !touchingFloor;
@@ -141,7 +152,7 @@ public class Player extends GameObject {
 	@Override
 	public void render(Graphics g) {
 		runningAnim.drawAnimation(g, x, y, width, height);
-		//gun1RunningAnim.drawAnimation(g, x, y + 35);
+		gun1RunningAnim.drawAnimation(g, x - width / 2, y, width * 2, height);
 		//g.drawImage(tex.player[0], x, y, width, height, null);
 		//		g.setColor(Color.orange);
 		//		g.fillRect(x, y, width, height);

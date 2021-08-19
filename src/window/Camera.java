@@ -5,7 +5,7 @@ public class Camera {
 	private float x = 0, y = 0;
 
 	public void tick() {
-		x -= 4;
+		x -= GameMain.WIDTH / 256;
 	}
 
 	public float getX() {

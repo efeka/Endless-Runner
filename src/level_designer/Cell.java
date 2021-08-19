@@ -20,6 +20,7 @@ public class Cell {
 	public static final int JUMP_THROUGH_LEFT = 10;
 	public static final int JUMP_THROUGH_MIDDLE = 11;
 	public static final int JUMP_THROUGH_RIGHT = 12;
+	public static final int GEM = 13;
 
 	public BufferedImage image;
 	public Rectangle rect;
@@ -109,6 +110,11 @@ public class Cell {
 			cellSpanX = 1;
 			cellSpanY = 1;
 			image = tex.groundTiles[10];
+			break;
+		case 13: //Jump Through Right
+			cellSpanX = 1;
+			cellSpanY = 1;
+			image = tex.gem[0];
 			break;
 		default:
 			cellSpanX = 1;

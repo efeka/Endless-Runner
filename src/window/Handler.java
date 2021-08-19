@@ -1,11 +1,9 @@
 package window;
 
 import java.awt.Graphics;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import framework.GameObject;
-import framework.ObjectId;
 import objects.Player;
 
 public class Handler {
@@ -25,32 +23,31 @@ public class Handler {
 	public Player player;
 
 	public Handler() {
-		BufferedImageLoader loader = new BufferedImageLoader();
+		//BufferedImageLoader loader = new BufferedImageLoader();
 		/* 
 		level1 = loader.loadImage("/level1.png");
 		loadImageLevel(level1);
 		*/
 	}
 
-	public void loadImageLevel(BufferedImage image) {
-		int w = image.getWidth();
-		int h = image.getHeight();
-
-		for (int xx = 0; xx < h; xx++) {
-			for (int yy = 0; yy < w; yy++) {
-				int pixel = image.getRGB(xx, yy);
-				int red = (pixel >> 16) & 0xff;
-				int green = (pixel >> 8) & 0xff;
-				int blue = (pixel) & 0xff;
-				
-				/*
-				 * Example
-				if (red == 166 && green == 93 && blue == 53)
-					addObject(new PathingHelper(xx * 32, yy * 32, PathingHelper.UP, false, ObjectId.PathingHelper), BOTTOM_LAYER);
-				*/
-			}
-		}
-	}
+//	public void loadImageLevel(BufferedImage image) {
+//		int w = image.getWidth();
+//		int h = image.getHeight();
+//
+//		for (int xx = 0; xx < h; xx++) {
+//			for (int yy = 0; yy < w; yy++) {
+//				int pixel = image.getRGB(xx, yy);
+//				int red = (pixel >> 16) & 0xff;
+//				int green = (pixel >> 8) & 0xff;
+//				int blue = (pixel) & 0xff;
+//				
+//				//Example
+//				if (red == 166 && green == 93 && blue == 53)
+//					addObject(new PathingHelper(xx * 32, yy * 32, PathingHelper.UP, false, ObjectId.PathingHelper), BOTTOM_LAYER);
+//				
+//			}
+//		}
+//	}
 
 	public void tick() {
 		for (int i = 0; i < layerMiddle.size(); i++) 

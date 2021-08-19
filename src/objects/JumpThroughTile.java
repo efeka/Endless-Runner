@@ -6,7 +6,6 @@ import java.awt.Rectangle;
 import framework.GameObject;
 import framework.ObjectId;
 import framework.Texture;
-import objects.GroundTile.TYPE;
 import window.Camera;
 import window.GameMain;
 import window.Handler;
@@ -31,7 +30,7 @@ public class JumpThroughTile extends GameObject {
 		this.type = type;
 		
 		width = GameMain.WIDTH / GameMain.TILE_COUNT_X;
-		height = width / 3;
+		height = width / 2;
 	}
 
 	@Override
@@ -44,13 +43,13 @@ public class JumpThroughTile extends GameObject {
 	public void render(Graphics g) {
 		switch (type) {
 		case Left:
-			g.drawImage(tex.groundTiles[8], x, y, null);
+			g.drawImage(tex.groundTiles[8], x, y, width, width, null);
 			break;
 		case Middle:
-			g.drawImage(tex.groundTiles[9], x, y, null);
+			g.drawImage(tex.groundTiles[9], x, y, width, width, null);
 			break;
 		case Right:
-			g.drawImage(tex.groundTiles[10], x, y, null);
+			g.drawImage(tex.groundTiles[10], x, y, width, width, null);
 			break;
 		}
 	}
