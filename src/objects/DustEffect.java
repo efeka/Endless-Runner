@@ -24,7 +24,8 @@ public class DustEffect extends GameObject {
 		this.cam = cam;
 		this.handler = handler;
 		
-		width = height = (int) Math.ceil((double) (GameMain.WIDTH) / GameMain.TILE_COUNT_X);
+		width = 2 * (int) Math.ceil((double) (GameMain.WIDTH) / GameMain.TILE_COUNT_X);
+		height = 2 * (int) Math.ceil((double) (GameMain.HEIGHT) / GameMain.TILE_COUNT_Y);
 		dustAnim = new Animation(4, tex.dustEffect[0], tex.dustEffect[1], tex.dustEffect[2], tex.dustEffect[3], tex.dustEffect[4]);
 	}
 
@@ -40,7 +41,7 @@ public class DustEffect extends GameObject {
 
 	@Override
 	public void render(Graphics g) {
-		dustAnim.drawAnimation(g, x, y, width, height);
+		dustAnim.drawAnimation(g, x - width / 2, y - height / 2, width, height);
 	}
 
 	@Override

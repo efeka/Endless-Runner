@@ -7,5 +7,8 @@ public enum ObjectId {
 	Coin(),
 	JumpThroughTile(),
 	Gem(),
-	DustEffect();
+	DustEffect(),
+	HUD(),
+	BasicEnemy(),
+	Menu();
 }

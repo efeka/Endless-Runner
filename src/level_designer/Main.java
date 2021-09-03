@@ -29,7 +29,7 @@ public class Main extends Canvas implements Runnable {
 		tex = new Texture();
 		grid = new Grid(rows, cols, cellSize, offset);
 		LevelDesignWindow ldw = new LevelDesignWindow(this, width, height, "Level Designer");
-		FileIO fileIO = new FileIO(grid, null);
+		FileIO fileIO = new FileIO(grid, null, null);
 		new ControlsWindow(ldw.getX() + ldw.getWidth() + 1, ldw.getY() + (ldw.getHeight() - 300) / 2, 300, 300, tex, fileIO);
 		
 		mouse = new Mouse(grid);

@@ -41,10 +41,16 @@ public class BasicBullet extends GameObject {
 	private void collision() {
 		for (int i = 0; i < handler.layerMiddle.size(); i++) {
 			GameObject tempObject = handler.layerMiddle.get(i);
-			if (tempObject.getId() == ObjectId.GroundTile) {
+			if (tempObject.getId() == ObjectId.GroundTile || tempObject.getId() == ObjectId.JumpThroughTile) {
 				if (getBounds().intersects(tempObject.getBounds())) {
 					handler.removeObject(this);
 					//TODO: play animation
+				}
+			}
+			if (tempObject.getId() == ObjectId.BasicEnemy) {
+				if (getBounds().intersects(tempObject.getBounds())) { 
+					((BasicEnemy) tempObject).takeDamage(50);
+					handler.removeObject(this);
 				}
 			}
 		}

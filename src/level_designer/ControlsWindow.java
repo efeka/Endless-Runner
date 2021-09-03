@@ -49,6 +49,7 @@ public class ControlsWindow {
 		objectTypeSelection.addItem("Jump Through Middle");
 		objectTypeSelection.addItem("Jump Through Right");
 		objectTypeSelection.addItem("Gem");
+		objectTypeSelection.addItem("Basic Enemy");
 		objectTypeSelection.setSelectedIndex(0);
 		objectTypeSelection.setBounds((width - 150) / 2, 120, 150, 20);
 		objectTypeSelection.setVisible(true);
@@ -107,6 +108,9 @@ public class ControlsWindow {
 					icon = new ImageIcon(tex.groundTiles[10].getScaledInstance(64, 64, 0));
 					break;
 				case Cell.GEM:
+					icon = new ImageIcon(tex.gem[0].getScaledInstance(64, 64, 0));
+					break;
+				case Cell.BASIC_ENEMY:
 					icon = new ImageIcon(tex.gem[0].getScaledInstance(64, 64, 0));
 					break;
 				default:

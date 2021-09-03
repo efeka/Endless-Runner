@@ -2,6 +2,7 @@ package framework;
 
 import java.util.ArrayList;
 
+import objects.BasicEnemy;
 import objects.Coin;
 import objects.Gem;
 import objects.GroundTile;
@@ -40,6 +41,9 @@ public class MapSections {
 			case Gem:
 				handler.addObject(new Gem(object.getX() - (int) cam.getX(), object.getY(), object.getWidth(), object.getHeight(), cam, handler, ObjectId.Gem), Handler.MIDDLE_LAYER);
 				break;
+			case BasicEnemy:
+				handler.addObject(new BasicEnemy(object.getX() - (int) cam.getX(), object.getY(), cam, handler, object.getId()), Handler.MIDDLE_LAYER);
+				break;
 			}
 		}
 		handler.renderPlayerLast();
@@ -55,7 +59,7 @@ public class MapSections {
 			for (int j = 0; j < section[i].length; j++) {
 				int width, height;
 				int cellX = GameMain.WIDTH + j * GameMain.WIDTH / GameMain.TILE_COUNT_X;
-				int cellY = i * GameMain.WIDTH / GameMain.TILE_COUNT_X;
+				int cellY = i * GameMain.HEIGHT / GameMain.TILE_COUNT_Y;
 				switch(section[i][j]) {
 				case 1: //Grass
 					list.add(new GroundTile(cellX, cellY, GroundTile.TYPE.Grass, cam, handler, ObjectId.GroundTile));
@@ -97,6 +101,9 @@ public class MapSections {
 					break;
 				case 13: //Gem
 					list.add(new Coin(cellX, cellY, GameMain.WIDTH / GameMain.TILE_COUNT_X, GameMain.WIDTH / GameMain.TILE_COUNT_X, cam, handler, ObjectId.Gem));
+					break;
+				case 14: //Basic Enemy
+					list.add(new BasicEnemy(cellX, cellY - GameMain.HEIGHT / GameMain.TILE_COUNT_Y, cam, handler, ObjectId.BasicEnemy));
 					break;
 				}
 			}

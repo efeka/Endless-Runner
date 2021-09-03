@@ -21,6 +21,7 @@ public class Cell {
 	public static final int JUMP_THROUGH_MIDDLE = 11;
 	public static final int JUMP_THROUGH_RIGHT = 12;
 	public static final int GEM = 13;
+	public static final int BASIC_ENEMY = 14;
 
 	public BufferedImage image;
 	public Rectangle rect;
@@ -112,6 +113,11 @@ public class Cell {
 			image = tex.groundTiles[10];
 			break;
 		case 13: //Jump Through Right
+			cellSpanX = 1;
+			cellSpanY = 1;
+			image = tex.gem[0];
+			break;
+		case 14: //Basic Enemy
 			cellSpanX = 1;
 			cellSpanY = 1;
 			image = tex.gem[0];

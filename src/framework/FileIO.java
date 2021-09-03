@@ -9,53 +9,67 @@ import window.GameMain;
 
 public class FileIO {
 	
-	private File file;
+	private File levelsFile, playerDataFile;
 	private Scanner reader;
 	private FileWriter writer;
 	private String userDirectory;
 	
 	private Grid grid;
 	private MapSections mapSections;
+	private PlayerData playerData;
 	
-	public FileIO(Grid grid, MapSections mapSections) {
+	public FileIO(Grid grid, MapSections mapSections, PlayerData playerData) {
 		this.grid = grid;
 		this.mapSections = mapSections;
+		this.playerData = playerData;
 		
 		userDirectory = new File("").getAbsolutePath();
-		file = new File(userDirectory + "/levelSegments.txt");
-		if (!file.exists())
-			file = new File(userDirectory + "\\src\\levelSegments.txt");
-		if (!file.exists()) {
+		levelsFile = new File(userDirectory + "/levelSegments.txt");
+		if (!levelsFile.exists())
+			levelsFile = new File(userDirectory + "\\src\\levelSegments.txt");
+		if (!levelsFile.exists()) {
 			System.err.println("Could not locate levelSegments.txt");
 			System.exit(0);
 		}
-	}
-	
-	public void saveSegment() {
-		int[][] segment = grid.getGrid();
-		String[] lines = new String[segment.length];
-		for (int i = 0; i < segment.length; i++) {
-			String line = "";
-			for (int j = 0; j < segment[i].length; j++) {
-				line += segment[i][j] + " ";
-			}
-			lines[i] = line;
+		
+		playerDataFile = new File(userDirectory + "/playerData.txt");
+		if (!playerDataFile.exists())
+			playerDataFile = new File(userDirectory + "\\src\\playerData.txt");
+		if (!playerDataFile.exists()) {
+			System.err.println("Could not locate playerData.txt");
+			System.exit(0);
 		}
 		
+	}
+	
+	public void savePlayerData() {
 		try {
-			writer = new FileWriter(file, true);
-			for (int i = 0; i < lines.length; i++)
-				writer.write(lines[i] + "\n");
-			writer.write("#\n");
+			writer = new FileWriter(playerDataFile, false);
+			writer.write("coins=" + playerData.getCoins() + "\n");
+			writer.write("gems=" + playerData.getGems());
 			writer.close();
-		} catch(Exception e) {
-			System.err.println("Failed to write into levelSegments.txt");
+		} catch (Exception e) {
+			System.err.println("Failed to write into playerData.txt");
+		}
+	}
+	
+	public void readPlayerData() {
+		try {
+			reader = new Scanner(playerDataFile);
+			String[] coins = reader.nextLine().split("=");
+			playerData.setCoins(Integer.parseInt(coins[1]));
+			String[] gems = reader.nextLine().split("=");
+			playerData.setGems(Integer.parseInt(gems[1]));
+			reader.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.err.println("Failed to read from playerData.txt");
 		}
 	}
 	
 	public void readSegments() {
 		try {
-			reader = new Scanner(file);
+			reader = new Scanner(levelsFile);
 			String[][] segment = new String[GameMain.TILE_COUNT_Y][GameMain.TILE_COUNT_X];
 			while (reader.hasNextLine()) {
 				for (int i = 0; i < GameMain.TILE_COUNT_Y; i++) {
@@ -72,6 +86,28 @@ public class FileIO {
 			reader.close();
 		} catch (Exception e) {
 			System.err.println("Failed to read from levelSegments.txt");
+		}
+	}
+	
+	public void saveSegment() {
+		int[][] segment = grid.getGrid();
+		String[] lines = new String[segment.length];
+		for (int i = 0; i < segment.length; i++) {
+			String line = "";
+			for (int j = 0; j < segment[i].length; j++) {
+				line += segment[i][j] + " ";
+			}
+			lines[i] = line;
+		}
+		
+		try {
+			writer = new FileWriter(levelsFile, true);
+			for (int i = 0; i < lines.length; i++)
+				writer.write(lines[i] + "\n");
+			writer.write("#\n");
+			writer.close();
+		} catch(Exception e) {
+			System.err.println("Failed to write into levelSegments.txt");
 		}
 	}
 	

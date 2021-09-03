@@ -31,8 +31,12 @@ public class Player extends GameObject {
 	private int initialX, initialY;
 	private float catchUpVelX;
 	private int jumpVelY;
+	
+	private int invulnerableTimer = 0, invulnerableCooldown = 120;
+	private boolean invulnerable = false;
 
 	private Animation runningAnim;
+	private Animation damagedRunAnim, damagedJumpAnim;
 	private Animation gun1RunningAnim;
 
 	public Player(int x, int y, int width, int height, PlayerData playerData, Camera cam, Handler handler, ObjectId id) {
@@ -43,11 +47,13 @@ public class Player extends GameObject {
 
 		initialX = x;
 		initialY = y;
-		velX = GameMain.WIDTH / 256;
+		velX = -cam.getVelX();
 		catchUpVelX = velX + 1;
 		jumpVelY = -1 * (int) Math.ceil((GameMain.HEIGHT / GameMain.TILE_COUNT_Y) / 3.2);
 
 		runningAnim = new Animation(4, tex.player[0], tex.player[1], tex.player[2], tex.player[3], tex.player[4], tex.player[5], tex.player[6], tex.player[7]);
+		damagedRunAnim = new Animation(4, tex.playerDamaged[0], tex.playerDamaged[1], tex.playerDamaged[2], tex.playerDamaged[3], tex.playerDamaged[4], tex.playerDamaged[5], tex.playerDamaged[6], tex.playerDamaged[7]);
+		damagedJumpAnim = new Animation(4, tex.playerDamaged[8], tex.player[8]);
 		gun1RunningAnim = new Animation(4, tex.gun1[0], tex.gun1[1], tex.gun1[2], tex.gun1[3], tex.gun1[4], tex.gun1[5], tex.gun1[6], tex.gun1[7]);
 	}
 
@@ -56,18 +62,29 @@ public class Player extends GameObject {
 		//shooting
 		if (shootTimer < shootCooldown)
 			shootTimer++;
-		else if (MouseInput.leftPressed) {
+		else if (playerData.getAmmo() > 0 && MouseInput.leftPressed) {
+			playerData.setAmmo(playerData.getAmmo() - 1);
 			shootTimer = 0;
-			handler.addObject(new BasicBullet(x + width - 35, y + height / 2 + 4, 12, 12, cam, handler, ObjectId.BasicBullet), Handler.MIDDLE_LAYER);
+			handler.addObject(new BasicBullet(x + 3 * width / 4, y + height / 2 - 2, 12, 12, cam, handler, ObjectId.BasicBullet), Handler.MIDDLE_LAYER);
 		}
 
 		//respawning
 		if (x < -cam.getX() - width || y > GameMain.HEIGHT) {
+			if (!invulnerable) {
+				takeDamage();
+			}
+			
 			x = (int) -cam.getX() + initialX;
 			y = initialY;
 			jumping = true;
 			velY = 0;
 		}
+		
+		//invulnerable
+		if (invulnerable && invulnerableTimer < invulnerableCooldown)
+			invulnerableTimer++;
+		else 
+			invulnerable = false;
 
 		//jumping
 		if (jumpTimer < jumpCooldown)
@@ -79,7 +96,8 @@ public class Player extends GameObject {
 			velY = jumpVelY;
 		}
 
-		//if the user gets stuck on an obstacle, the player tries to go back to its original position
+		//if the user gets stuck on an obstacle or somehow gets ahead of
+		//the initial x coordinate, the player character tries to go back to it's original position
 		if (x + cam.getX() < initialX)
 			velX = catchUpVelX;
 		else if (x + cam.getX() > initialX)
@@ -103,7 +121,14 @@ public class Player extends GameObject {
 		collision();
 
 		runningAnim.runAnimation();
+		damagedRunAnim.runAnimation();
+		damagedJumpAnim.runAnimation();
 		gun1RunningAnim.runAnimation();
+	}
+	
+	private void makeInvulnerable() {
+		invulnerableTimer = 0;
+		invulnerable = true;
 	}
 
 	private void collision() {
@@ -126,7 +151,7 @@ public class Player extends GameObject {
 					x = tempObject.getX() - width;
 				}
 			}
-			else if (tempObject.getId() == ObjectId.JumpThroughTile) {
+			if (tempObject.getId() == ObjectId.JumpThroughTile) {
 				if (velY >= 0 && getBoundsBottom().intersects(tempObject.getBounds())) {
 					y = tempObject.getY() + tempObject.getWidth() - tempObject.getHeight() - height;
 					velY = 0;
@@ -137,27 +162,50 @@ public class Player extends GameObject {
 					x = tempObject.getX() - width;
 				}
 			}
-			else if (tempObject.getId() == ObjectId.Coin || tempObject.getId() == ObjectId.Gem) {
+			if (tempObject.getId() == ObjectId.Coin || tempObject.getId() == ObjectId.Gem) {
 				if (getBounds().intersects(tempObject.getBounds())) {
 					handler.removeObject(tempObject);
-					if (tempObject.getId() == ObjectId.Coin)
+					if (tempObject.getId() == ObjectId.Coin) {
 						playerData.setCoins(playerData.getCoins() + 1);
-					else
+						handler.addObject(new PickUpEffect(tempObject.getX(), tempObject.getY(), cam, handler, ObjectId.Coin), Handler.TOP_LAYER);
+					}
+					else if (tempObject.getId() == ObjectId.Gem) {
 						playerData.setGems(playerData.getGems() + 1);
+						handler.addObject(new PickUpEffect(tempObject.getX(), tempObject.getY(), cam, handler, ObjectId.Gem), Handler.TOP_LAYER);
+					}
+				}
+			}
+			if (tempObject.getId() == ObjectId.BasicEnemy) {
+				if (getBounds().intersects(tempObject.getBounds())) {
+					takeDamage();
 				}
 			}
 		}
 		falling = !touchingFloor;
 	}
+	
+	private void takeDamage() {
+		if (!invulnerable)
+			playerData.setHearts(playerData.getHearts() - 1);
+		makeInvulnerable();
+	}
 
 	@Override
 	public void render(Graphics g) {
 		if (jumping) {
-			g.drawImage(tex.player[8], x, y, width, height, null);
+			if (invulnerable)
+				damagedJumpAnim.drawAnimation(g, x, y, width, height);				
+			else 
+				g.drawImage(tex.player[8], x, y, width, height, null);
+			
 			g.drawImage(tex.gun1[2], x - width / 2, y, width * 2, height, null);
 		}
 		else {
-			runningAnim.drawAnimation(g, x, y, width, height);
+			if (invulnerable) 
+				damagedRunAnim.drawAnimation(g, x, y, width, height);
+			else
+				runningAnim.drawAnimation(g, x, y, width, height);
+			
 			gun1RunningAnim.drawAnimation(g, x - width / 2, y, width * 2, height);
 		}
 
